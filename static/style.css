@@ -1,0 +1,65 @@
+:root {
+    --main-bg: #1E1E1E;
+    --accent-color: #FCD46C;
+    --dark-text: #2C2A28;
+    --gaegu: 'Gaegu', cursive; 
+    --inconsolata: 'Inconsolata', monospace;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: white;
+    width: 100%;
+    background-color: var(--main-bg);
+    overflow-x: hidden;
+}
+
+img {
+    width: 100%;
+}
+
+button {
+    width: fit-content;
+    font-size: 1.25rem;
+    color: var(--dark-text);
+    background-color: var(--accent-color);
+    padding: 0.75rem;
+    border-radius: 0.5em;
+    border: none;
+    font-family: var(--inconsolata);
+    font-weight: 500;
+    font-size: clamp(1.25rem,2.2vw,2.25rem);
+}
+
+
+h1 {
+    font-size: 2.5rem;
+    color: white;
+    font-family: var(--gaegu);
+}
+
+h2 {
+    font-size: 1.95rem;
+    font-family: var(--gaegu);
+
+    color: var(--accent-color);
+}
+
+p {
+    font-family: 'Inconsolata', monospace;
+    font-size: clamp(1rem,2vw,2rem);
+}
+
+.trans-card {
+    background: linear-gradient(#1e1e1e52, transparent);
+    padding: 0.2em 0.25em;
+    border-radius: 0.2em;
+    /* backdrop-filter: blur(2px); */
+    /* -webkit-backdrop-filter: blur(2px); */
+
+}
