@@ -19,70 +19,111 @@
             <button>Donate Now</button>
         </div>
     </div>
+
     <figure id="hero-img-wrp">
         <img id="hero-img" src={gangIMG} alt="The Gang in a Circle" />
     </figure>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        id="hero-separator"
+        viewBox="0 0 1570 414"
+        fill="none"
+    >
+        <path
+            d="M1577 74.7511L1577 414H787H-2.99995L-3 0.307434C168 0.307415 350.5 73.1143 681.294 146.197C1015.99 220.14 998.345 283.092 1176.78 251.616C1355.22 220.14 1515.19 81.9721 1577 74.7511Z"
+            fill="#3B3740"
+        />
+    </svg>
+</section>
+<section id="what-you-get">
+    <h2>What you shall gain from a single dollar:</h2>
 </section>
 
-<style>
+<style lang="scss">
+    section {
+        padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
+        width: 100%;
+    }
 
     header {
-        padding: clamp(0.05rem, 4vw,2rem)  clamp(0.1rem,4vw,3rem);
+        padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
+
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
-    }
-    header h1 {
-        font-size: clamp(1.85rem, 5vw ,3.75rem);
+
+        h1 {
+            font-size: clamp(1.85rem, 5vw, 3.75rem);
+        }
     }
 
     #hero {
-        width: 100%;
+        padding: 0;
         height: max-content;
         display: flex;
         align-items: stretch;
+        overflow-x: clip;
+        position: relative;
+
+        #copy-wrapper {
+            padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
+            display: flex;
+            align-items: center;
+            #hero-copy {
+                display: flex;
+                flex-direction: column;
+                gap: 0.85rem;
+                max-width: 500px;
+            }
+        }
+
+        #hero-img-wrp {
+            position: relative;
+            flex-grow: 1;
+            height: 400px;
+            #hero-img {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: -20px;
+                margin: auto;
+                min-width: 800px;
+                z-index: -1;
+            }
+        }
     }
 
-    #copy-wrapper {
-        padding: clamp(0.05rem, 4vw,2rem)  clamp(0.1rem,4vw,3rem);
-        display: flex;
-        align-items: center;
-    }
-
-    #hero-copy {
+    #what-you-get {
+        margin-top: 50px;
+        width: 100%;
+        // margin: ;
+        padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 0.85rem;
-        max-width: 500px;
-    }
-
-    #hero-copy h2 {
-        font-size: clamp(1.5rem,4.5vw,3rem);
-    }
-
-    #hero-img-wrp {
+        align-items: center;
         position: relative;
-        flex-grow: 1;
-        height: 400px;
-    }
+        background-color: var(--second-bg);
+        z-index: -2;
 
-    #hero-img {
+        h2 {
+            width: clamp(250px, 70vw, 650px);
+            text-align: center;
+        }
+    }
+    #hero-separator {
+        width: 100%;
         position: absolute;
-        top: 0;
-        bottom: 0;
-        right: -20px;
-        margin: auto;
-        min-width: 800px;
-        z-index: -1;
+        bottom: 0%;
+        z-index: -2;
+        left: 0;
+        right: 0;
     }
 
     @media only screen and (max-width: 520px) {
         #hero {
             flex-direction: column;
             justify-content: stretch;
-            overflow-x: clip;
-            /* overflow-x:hidden; */
         }
 
         #hero-img-wrp {
