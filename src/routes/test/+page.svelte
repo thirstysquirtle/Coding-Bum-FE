@@ -1,5 +1,6 @@
 <script>
     import gangIMG from "$lib/images/gang2_up_trans.png";
+    import SideScroll from "$lib/components/SideScroll.svelte"
 </script>
 
 <header>
@@ -40,7 +41,10 @@
 </section>
 <section id="what-you-get">
     <h2>What you shall gain from a single dollar:</h2>
+    <SideScroll/>
 </section>
+<SideScroll/>
+
 
 <style lang="scss">
     section {
@@ -62,15 +66,11 @@
         height: max-content;
         width: 100%;
         display: grid;
-        // align-content: center;
-        // align-items: center;
         justify-content: center;
 
-        overflow-x: clip;
+        // overflow-x: clip;
         position: relative;
-        // grid-template-rows: fit-content 1fr;
         grid-template-columns: minmax(275px, 0.75fr) 1fr;
-        grid-template-rows: 1fr;
 
         #copy-wrapper {
             grid-row: 1/-1;
@@ -78,7 +78,6 @@
             padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
             display: flex;
             align-items: center;
-            // min-width: 400px;
             min-width: 280px;
             #hero-copy {
                 display: flex;
@@ -103,37 +102,37 @@
         }
         #hero-separator {
             position: absolute;
+            height: 10vw;
             bottom: -2px;
             z-index: -2;
-            width: 102%;
+            width: calc(100% + 2px);
         }
     }
 
     #what-you-get {
         width: 100%;
-        min-height: 50vh;
+        min-height: 100vh;
         // margin: ;
         padding: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        position: relative;
         background-color: var(--second-bg);
-        z-index: -2;
 
         h2 {
-            width: clamp(250px, 70vw, 650px);
+            width: 20ch;
             text-align: center;
         }
     }
 
-    @media only screen and (max-width: 1200px) {
+    @media only screen and (max-width: 770px) {
         #hero {
-            grid-template-areas: "copy" "image" "separator";
-        }
-
-        #hero-img-wrp {
-            height: 50vh;
+            #hero-img-wrp {
+                #hero-img {
+                    top: calc(200px - 35vw);
+                    width: 95vw;
+                }
+            }
         }
     }
 </style>
