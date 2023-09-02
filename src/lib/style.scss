@@ -1,11 +1,13 @@
+
 :root {
     --main-bg: #1E1E1E;
     --second-bg: #3B3740;
     --accent-color: #FCD46C;
     --dark-text: black;
-    --gaegu: 'Gaegu', cursive; 
+    --gaegu:'Merriweather', serif; ; 
     --inconsolata: 'Inconsolata', monospace;
 }
+
 
 
 
@@ -16,11 +18,16 @@
 }
 
 
+section {
 
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+}
 body {
     color: white;
     width: 100%;
     background-color: var(--main-bg);
+    overflow-x:hidden;
 }
 
 img {
@@ -30,7 +37,7 @@ img {
 button {
     width: fit-content;
     font-size: 1.25rem;
-    color: var(--dark-text);
+    color: rgb(45, 45, 45);
     background-color: var(--accent-color);
     padding: 0.75rem;
     border-radius: 0.5em;
@@ -41,23 +48,23 @@ button {
 }
 
 h1 {
-    font-size: clamp(2rem, 5vw, 5rem);
+    font-size: clamp(2rem, 4vw, 5rem);
     
     color: white;
     font-family: var(--gaegu);
 }
 
 h2 {
-    font-size: clamp(1.5rem, 3vw, 3.5rem);
+    font-size: clamp(1.5rem, 2.3vw, 3.5rem);
 
     font-family: var(--gaegu);
-
+    font-weight: lighter;
     color: var(--accent-color);
 }
 
 p {
     font-family: 'Inconsolata', monospace;
-    font-size: clamp(1rem, 2vw, 2rem);
+    font-size: clamp(1.1rem, 2vw, 2rem);
 
 }
 

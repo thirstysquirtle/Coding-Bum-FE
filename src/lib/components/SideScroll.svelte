@@ -2,8 +2,8 @@
 </script>
 
 <div id="cards-container">
-    <div class="card">
-        <h2>Rankidng</h2>
+    <div id="ranking-card" class="card">
+        <h2>Ranking</h2>
         <p>
             You have already proven yourself to be among the finest. However,
             within the embrace of our exclusive club, your stature ascends to
@@ -12,7 +12,7 @@
             be forever secured, a testament to your magnificence.
         </p>
     </div>
-    <div class="card">
+    <div id="elites-card" class="card">
         <h2>The Names Of your Fellow Elites</h2>
         <p>
             You shall be granted exclusive access to a venerable compendium of
@@ -24,7 +24,7 @@
             beacon of assurance.
         </p>
     </div>
-    <div id="gay" class="card">
+    <div id="boasting-card" class="card">
         <h2>Boasting Privileges</h2>
         <p>
             No longer shall you heed the opinions of lesser souls, for your
@@ -36,12 +36,29 @@
 </div>
 
 <style lang="scss">
-    * {
-        outline: 2px solid red;
-        // background-color: rgba(0, 128, 0, 0.11);
+    #cards-container::-webkit-scrollbar {
+        height: 0.75rem;
     }
+
+    #cards-container::-webkit-scrollbar-track {
+        background-color: rgba(202, 202, 202, 0); /* Set the background color of the track */
+        border-radius: 1rem;
+    }
+
+    #cards-container::-webkit-scrollbar-thumb {
+        background-color: $main-bg; /* Set the color of the thumb */
+        border-radius: 4px; /* Add rounded corners to the thumb */
+    }
+
+    #cards-container::-webkit-scrollbar-thumb:hover {
+        background-color: transparentize($color: $main-bg, $amount: 0.4);
+    }
+
     #cards-container {
-        width: 100%;
+        padding: 2rem;
+        margin: 2rem;
+        margin-bottom: 30vh;
+        width: calc(100% - 1rem);
         display: grid;
         grid-auto-flow: column;
         // flex-direction: column;
@@ -49,10 +66,44 @@
         overflow: auto;
         gap: 5vw;
 
-    .card {
-        width: min(85vw, 3000px);
-        height: min(70vh, 2000px);
+        #ranking-card {
+            background-image: url("$lib/images/ranking.png");
+            background-position: 50% 40%;
+        }
 
+        #elites-card {
+            background-image: url("$lib/images/names.png");
+            background-position: 50% 20%;
+        }
+
+        #boasting-card {
+            background-image: url("$lib/images/boasting_rights.png");
+            background-position: center;
+        }
+
+        .card {
+            background-repeat: no;
+            background-size: cover;
+            background-blend-mode: multiply;
+            background-color: transparentize($color: $second-bg, $amount: 0.5);
+
+            padding: 2rem;
+            border-radius: 1.25em;
+            border: 1px solid rgba(167, 166, 166, 0.491);
+            box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.387);
+            display: grid;
+            width: min(80vw, 1500px);
+            height: min(65vh, 700px);
+
+            h2 {
+                justify-self: start;
+                align-self: flex-start;
+            }
+            p {
+                justify-self: end;
+                align-self: flex-end;
+                text-align: end;
+            }
+        }
     }
-}
 </style>

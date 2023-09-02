@@ -43,8 +43,18 @@
     <h2>What you shall gain from a single dollar:</h2>
     <SideScroll/>
 </section>
-<SideScroll/>
+<section id="tldr" class="center-section"> 
+    <h2>TL;DR</h2>
+    <p>Give me a dollar to see who else did the same</p>
+</section>
+<section id="dont-miss" class="center-section">
+    <h2>Do Not Miss Out!</h2>
+    <p>I’m so broke that this website might go down before you get the chance to send me your hard earned money!</p>
+    <h2>This is a limited time opportunity!</h2>
+</section>
+<footer>
 
+</footer>
 
 <style lang="scss">
     section {
@@ -105,7 +115,7 @@
             height: 10vw;
             bottom: -2px;
             z-index: -2;
-            width: calc(100% + 2px);
+            width: 100%;
         }
     }
 
@@ -123,6 +133,35 @@
             width: 20ch;
             text-align: center;
         }
+    }
+
+    #tldr {
+        
+
+    }
+    #dont-miss {
+        background-color: $second-bg;
+        gap: 4rem;
+        p {
+            max-width: 55ch;
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+            max-width: 25ch;
+        }
+    }
+
+    .center-section {
+        h2 {
+            letter-spacing: 0.15ch;
+        }
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;  
     }
 
     @media only screen and (max-width: 770px) {
