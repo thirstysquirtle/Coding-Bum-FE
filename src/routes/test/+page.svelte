@@ -5,30 +5,49 @@
     import SideScroll from "$lib/components/SideScroll.svelte";
     import { getContext, onMount } from "svelte";
     import headerStore from "$lib/headerStore";
-    let headerObserver: IntersectionObserver;
 
     onMount(() => {
-        headerObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        console.log(entry.target.dataset.bgColor);
-                    }
-                });
-            }, 
-            {rootMargin: `${$headerStore.offsetHeight}px 0px 0px 0px`,
-            threshold: 1,
-        }
-        );
-        console.log($headerStore.offsetHeight)
+        function cameleonHeader() {
+            if (window.scrollY == 0) {
+                $headerStore.style.backgroundColor = "transparent";
+                $headerStore.style.borderBottom = "none";
+            } else {
+                const sections = Array.from(
+                    document.querySelectorAll("section")
+                );
+                const headerPos = $headerStore.getBoundingClientRect().bottom;
 
-        document
-            .querySelectorAll("section")
-            .forEach((section) => headerObserver.observe(section));
+                let currentSection;
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    if (headerPos >= sections[i].getBoundingClientRect().top) {
+                        currentSection = sections[i];
+                        break;
+                    }
+                }
+
+                console.log(headerPos, currentSection?.dataset.bgColor);
+
+                // console.log(currentSection)
+                $headerStore.style.backgroundColor =
+                    currentSection?.dataset.bgColor;
+                $headerStore.style.borderBottom = "1px dashed black";
+            }
+        }
+        cameleonHeader();
+
+        window.addEventListener("scroll", cameleonHeader);
+        return () => {
+            window.removeEventListener("scroll", cameleonHeader);
+        };
     });
 
     function buyButton(e) {
-        console.log(headerObserver.takeRecords());
+        const sections = Array.from(document.querySelectorAll("section"))
+            .reverse()
+            .map((section) => {
+                return section.getBoundingClientRect().top;
+            });
+        console.log(sections);
     }
 </script>
 
