@@ -1,17 +1,38 @@
 <script lang="ts">
     const mainBg = "#1E1E1E";
-    const secondBg = "#3B3740"
+    const secondBg = "#3B3740";
     import gangIMG from "$lib/images/gang2_up_trans.png";
     import SideScroll from "$lib/components/SideScroll.svelte";
-    import { getContext } from "svelte";
-    import headerStore from "$lib/headerStore"
+    import { getContext, onMount } from "svelte";
+    import headerStore from "$lib/headerStore";
+    let headerObserver: IntersectionObserver;
+
+    onMount(() => {
+        headerObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        console.log(entry.target.dataset.bgColor);
+                    }
+                });
+            }, 
+            {rootMargin: `${$headerStore.offsetHeight}px 0px 0px 0px`,
+            threshold: 1,
+        }
+        );
+        console.log($headerStore.offsetHeight)
+
+        document
+            .querySelectorAll("section")
+            .forEach((section) => headerObserver.observe(section));
+    });
 
     function buyButton(e) {
-        console.log($headerStore)
+        console.log(headerObserver.takeRecords());
     }
 </script>
 
-<section id="hero" data-bgColor={mainBg}>
+<section id="hero" data-bg-color={mainBg}>
     <div id="copy-wrapper">
         <div id="hero-copy">
             <h2>Indulge in the Pinnacle of Generosity</h2>
@@ -43,15 +64,15 @@
         />
     </svg>
 </section>
-<section id="what-you-get" data-bgColor={secondBg}>
+<section id="what-you-get" data-bg-color={secondBg} class="center-section">
     <h2>What you shall gain from a single dollar:</h2>
     <SideScroll />
 </section>
-<section id="tldr" class="center-section" data-bgColor={mainBg}>
+<section id="tldr" class="center-section" data-bg-color={mainBg}>
     <h2>TL;DR</h2>
     <p>Give me a dollar to see who else did the same</p>
 </section>
-<section id="dont-miss" class="center-section" data-bgColor={secondBg}>
+<section id="dont-miss" class="center-section" data-bg-color={secondBg}>
     <div class="section-content">
         <h2>Do Not Miss Out!</h2>
         <p>
@@ -65,8 +86,13 @@
         <button class="small-button">Login</button>
     </footer>
 </section>
+<button on:click={buyButton} id="test">test</button>
 
 <style lang="scss">
+    #test {
+        position: fixed;
+        bottom: 0;
+    }
     // footer {
     //     height: 5rem;
     //     display: flex;
@@ -129,12 +155,12 @@
 
     #what-you-get {
         width: 100%;
-        min-height: 100vh;
         // margin: ;
         padding: 1rem 0 0 0;
+        // min-height: 100vh;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        justify-content: center;
         background-color: var(--second-bg);
 
         h2 {
@@ -143,20 +169,19 @@
         }
     }
 
-    
     #dont-miss {
         background-color: $second-bg;
-        height: calc(100vh - 5rem);
         display: grid;
         grid-template-rows: 1fr min-content;
         width: 100%;
         justify-content: stretch;
 
         .section-content {
-            margin-top: 2rem ;
+            margin-top: 2rem;
             justify-self: center;
             align-self: center;
             display: grid;
+            gap: 1.5ch;
             place-items: center;
             p {
                 max-width: 55ch;
@@ -185,7 +210,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2rem;
     }
 
     @media only screen and (max-width: 770px) {

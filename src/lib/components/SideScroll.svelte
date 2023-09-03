@@ -56,7 +56,6 @@
 
     #cards-container {
         padding: 2rem;
-        margin-bottom: 30vh;
         width: calc(100% - 1rem);
         display: grid;
         grid-auto-flow: column;
