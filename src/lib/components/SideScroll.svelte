@@ -56,7 +56,6 @@
 
     #cards-container {
         padding: 2rem;
-        margin: 2rem;
         margin-bottom: 30vh;
         width: calc(100% - 1rem);
         display: grid;
@@ -78,7 +77,7 @@
 
         #boasting-card {
             background-image: url("$lib/images/boasting_rights.png");
-            background-position: center;
+            background-position: 50% 40%;
         }
 
         .card {
@@ -87,13 +86,13 @@
             background-blend-mode: multiply;
             background-color: transparentize($color: $second-bg, $amount: 0.5);
 
-            padding: 2rem;
+            padding: 1rem 2rem;
             border-radius: 1.25em;
             border: 1px solid rgba(167, 166, 166, 0.491);
             box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.387);
             display: grid;
             width: min(80vw, 1500px);
-            height: min(65vh, 700px);
+            height: min(55vh, 700px);
 
             h2 {
                 justify-self: start;

@@ -1,13 +1,17 @@
-<script>
+<script lang="ts">
+    const mainBg = "#1E1E1E";
+    const secondBg = "#3B3740"
     import gangIMG from "$lib/images/gang2_up_trans.png";
-    import SideScroll from "$lib/components/SideScroll.svelte"
+    import SideScroll from "$lib/components/SideScroll.svelte";
+    import { getContext } from "svelte";
+    import headerStore from "$lib/headerStore"
+
+    function buyButton(e) {
+        console.log($headerStore)
+    }
 </script>
 
-<header>
-    <h1>The Coding Bum</h1>
-    <button>Join Now</button>
-</header>
-<section id="hero">
+<section id="hero" data-bgColor={mainBg}>
     <div id="copy-wrapper">
         <div id="hero-copy">
             <h2>Indulge in the Pinnacle of Generosity</h2>
@@ -17,7 +21,7 @@
                 a dollar - a trivial sum for the likes of you - and gain exclusive
                 access to a distinguished catalogue of kindred spirits.
             </p>
-            <button>Donate Now</button>
+            <button on:click={buyButton}>Donate Now</button>
         </div>
     </div>
 
@@ -39,35 +43,39 @@
         />
     </svg>
 </section>
-<section id="what-you-get">
+<section id="what-you-get" data-bgColor={secondBg}>
     <h2>What you shall gain from a single dollar:</h2>
-    <SideScroll/>
+    <SideScroll />
 </section>
-<section id="tldr" class="center-section"> 
+<section id="tldr" class="center-section" data-bgColor={mainBg}>
     <h2>TL;DR</h2>
     <p>Give me a dollar to see who else did the same</p>
 </section>
-<section id="dont-miss" class="center-section">
-    <h2>Do Not Miss Out!</h2>
-    <p>I’m so broke that this website might go down before you get the chance to send me your hard earned money!</p>
-    <h2>This is a limited time opportunity!</h2>
+<section id="dont-miss" class="center-section" data-bgColor={secondBg}>
+    <div class="section-content">
+        <h2>Do Not Miss Out!</h2>
+        <p>
+            I’m so broke that this website might go down before you get the
+            chance to send me your hard earned money!
+        </p>
+        <h2>This is a limited time opportunity!</h2>
+    </div>
+    <footer>
+        <button class="small-button italic underline">Terms of Service</button>
+        <button class="small-button">Login</button>
+    </footer>
 </section>
-<footer>
-
-</footer>
 
 <style lang="scss">
+    // footer {
+    //     height: 5rem;
+    //     display: flex;
+    //     justify-content: space-evenly;
+    //     align-items: center;
+    // }
+
     section {
         padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-        width: 100%;
-    }
-
-    header {
-        padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         width: 100%;
     }
 
@@ -123,7 +131,7 @@
         width: 100%;
         min-height: 100vh;
         // margin: ;
-        padding: 0;
+        padding: 1rem 0 0 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -135,20 +143,36 @@
         }
     }
 
-    #tldr {
-        
-
-    }
+    
     #dont-miss {
         background-color: $second-bg;
-        gap: 4rem;
-        p {
-            max-width: 55ch;
-            text-align: center;
+        height: calc(100vh - 5rem);
+        display: grid;
+        grid-template-rows: 1fr min-content;
+        width: 100%;
+        justify-content: stretch;
+
+        .section-content {
+            margin-top: 2rem ;
+            justify-self: center;
+            align-self: center;
+            display: grid;
+            place-items: center;
+            p {
+                max-width: 55ch;
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+                max-width: 25ch;
+            }
         }
-        h2 {
-            text-align: center;
-            max-width: 25ch;
+        footer {
+            width: 100%;
+            align-self: flex-end;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
         }
     }
 
@@ -161,7 +185,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2rem;  
+        gap: 2rem;
     }
 
     @media only screen and (max-width: 770px) {
