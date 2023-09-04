@@ -11,31 +11,37 @@
     //     cardContainer.scrollLeft += mouseTravel
 
     // }
-    
-function handleMouse(e:MouseEvent) {
-        e.preventDefault()
-        if(e.buttons == 1 ) {
-            cardContainer.style.scrollSnapType = "none"
-            const mouseTravel = lastMousePos - e.clientX
-            
-            cardContainer.scrollTo({left: cardContainer.scrollLeft + (mouseTravel *1.5)})
-            lastMousePos = e.clientX
-            console.log(mouseTravel)
+
+    function handleMouse(e: MouseEvent) {
+        e.preventDefault();
+        if (e.buttons == 1) {
+            cardContainer.style.scrollSnapType = "none";
+            const mouseTravel = lastMousePos - e.clientX;
+
+            cardContainer.scrollTo({
+                left: cardContainer.scrollLeft + mouseTravel * 1.5,
+            });
+            lastMousePos = e.clientX;
+            console.log(mouseTravel);
         } else {
             // cardContainer.scrollTo({left: cardContainer.scrollLeft})
             // cardContainer.style.scrollBehavior = "smooth"
             // cardContainer.style.scrollSnapType = "x proximity"
-            lastMousePos = e.clientX
+            lastMousePos = e.clientX;
         }
-
     }
-
 </script>
 
-<div tabindex="-1" role="menu" on:mousemove={handleMouse} id="cards-container" bind:this={cardContainer}>
+<div
+    tabindex="-1"
+    role="menu"
+    on:mousemove={handleMouse}
+    id="cards-container"
+    bind:this={cardContainer}
+>
     <div id="ranking-card" class="card">
         <h2>Ranking</h2>
-        <p >
+        <p>
             You have already proven yourself to be among the finest. However,
             within the embrace of our exclusive club, your stature ascends to
             unprecedented heights. <br /> Here, you shall discover your esteemed
@@ -71,7 +77,12 @@ function handleMouse(e:MouseEvent) {
     }
 
     #cards-container::-webkit-scrollbar-track {
-        background-color: rgba(202, 202, 202, 0); /* Set the background color of the track */
+        background-color: rgba(
+            202,
+            202,
+            202,
+            0
+        ); /* Set the background color of the track */
         border-radius: 1rem;
     }
 
@@ -85,9 +96,9 @@ function handleMouse(e:MouseEvent) {
     }
 
     #cards-container {
-        cursor:grab;
+        cursor: grab;
         user-select: none;
-        padding: clamp(0.2rem, 3vw,2rem);
+        padding: clamp(0.2rem, 3vw, 2rem);
         width: 99%;
         display: grid;
         grid-auto-flow: column;
@@ -117,7 +128,6 @@ function handleMouse(e:MouseEvent) {
         }
 
         .card {
-            scroll-snap-align: center;
             // min-height: fit-content;
             background-repeat: no;
             background-size: cover;
@@ -145,12 +155,14 @@ function handleMouse(e:MouseEvent) {
                 overflow: hidden;
             }
         }
-      }
+    }
 
-      @media (hover:none), (pointer:none), (pointer: coarse) {
+    @media (hover: none), (pointer: none), (pointer: coarse) {
         #cards-container {
-                scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            .card {
+                scroll-snap-align: center;
             }
         }
-  
+    }
 </style>

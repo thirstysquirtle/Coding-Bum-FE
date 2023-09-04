@@ -209,12 +209,12 @@
         justify-content: stretch;
 
         .section-content {
-            margin-top: 2rem;
             justify-self: center;
             align-self: center;
             display: grid;
             gap: 1.5ch;
             place-items: center;
+            margin-bottom: 3vh;
             p {
                 max-width: 55ch;
                 text-align: center;
