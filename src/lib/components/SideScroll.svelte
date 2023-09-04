@@ -4,7 +4,7 @@
 <div id="cards-container">
     <div id="ranking-card" class="card">
         <h2>Ranking</h2>
-        <p>
+        <p >
             You have already proven yourself to be among the finest. However,
             within the embrace of our exclusive club, your stature ascends to
             unprecedented heights. <br /> Here, you shall discover your esteemed
@@ -30,7 +30,7 @@
             No longer shall you heed the opinions of lesser souls, for your
             ascendancy to this hallowed group transcends the mundane. You shall
             walk with unyielding confidence, knowing that you have attained an
-            echelon of magnificence that others can only dream of. asdas
+            echelon of magnificence that others can only dream of.
         </p>
     </div>
 </div>
@@ -55,43 +55,52 @@
     }
 
     #cards-container {
-        padding: 2rem;
-        width: calc(100% - 1rem);
+        padding: clamp(0.2rem, 3vw,2rem);
+        width: 99%;
         display: grid;
         grid-auto-flow: column;
+        grid-template-rows: 1fr;
+        // align-content: stretch;
+        // align-items: center;
+        flex-grow: 1;
+        // align-content: stretch;
         // flex-direction: column;
-        height: max-content;
+        // height: 100;
         overflow: auto;
         gap: 5vw;
+        scroll-snap-type: x mandatory;
 
         #ranking-card {
-            background-image: url("$lib/images/ranking.png");
+            background-image: url("$lib/images/ranking_dark.png");
             background-position: 50% 40%;
         }
 
         #elites-card {
-            background-image: url("$lib/images/names.png");
+            background-image: url("$lib/images/names_dark.png");
             background-position: 50% 20%;
         }
 
         #boasting-card {
-            background-image: url("$lib/images/boasting_rights.png");
+            background-image: url("$lib/images/boasting_rights_dark.png");
             background-position: 50% 40%;
         }
 
         .card {
+            scroll-snap-align: center;
+            // min-height: fit-content;
             background-repeat: no;
             background-size: cover;
-            background-blend-mode: multiply;
-            background-color: transparentize($color: $second-bg, $amount: 0.5);
+            // background-blend-mode: multiply;
+            // background-color: transparentize($color: $second-bg, $amount: 0.5);
 
-            padding: 1rem 2rem;
+            padding: clamp(0.5rem, 1vw, 2rem) clamp(1rem, 2vw, 4rem);
             border-radius: 1.25em;
             border: 1px solid rgba(167, 166, 166, 0.491);
             box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.387);
             display: grid;
             width: min(80vw, 1500px);
-            height: min(55vh, 700px);
+            // height: min(55vh, 700px);
+            height: 90%;
 
             h2 {
                 justify-self: start;
@@ -101,6 +110,8 @@
                 justify-self: end;
                 align-self: flex-end;
                 text-align: end;
+                max-height: 50%;
+                overflow: hidden;
             }
         }
     }
