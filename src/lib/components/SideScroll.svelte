@@ -1,7 +1,38 @@
-<script>
+<script lang="ts">
+    let lastMousePos = 0;
+    let cardContainer: Element;
+    // function handleDown(e:MouseEvent) {
+    //     lastMousePos = e.clientX
+    //     console.log("test")
+
+    // }
+    // function handleUp (e:MouseEvent) {
+    //     const mouseTravel = lastMousePos - e.clientX
+    //     cardContainer.scrollLeft += mouseTravel
+
+    // }
+    
+function handleMouse(e:MouseEvent) {
+        e.preventDefault()
+        if(e.buttons == 1 ) {
+            cardContainer.style.scrollSnapType = "none"
+            const mouseTravel = lastMousePos - e.clientX
+            
+            cardContainer.scrollTo({left: cardContainer.scrollLeft + (mouseTravel *1.5)})
+            lastMousePos = e.clientX
+            console.log(mouseTravel)
+        } else {
+            // cardContainer.scrollTo({left: cardContainer.scrollLeft})
+            // cardContainer.style.scrollBehavior = "smooth"
+            // cardContainer.style.scrollSnapType = "x proximity"
+            lastMousePos = e.clientX
+        }
+
+    }
+
 </script>
 
-<div id="cards-container">
+<div tabindex="-1" role="menu" on:mousemove={handleMouse} id="cards-container" bind:this={cardContainer}>
     <div id="ranking-card" class="card">
         <h2>Ranking</h2>
         <p >
@@ -20,8 +51,7 @@
             treasure trove of nomenclature shall prove itself an invaluable
             asset for naming progeny, beloved pets, esteemed businesses,
             illustrious clans, and beyond. No longer shall hesitation cloud your
-            path, for this curated anthology of superlative names shall be your
-            beacon of assurance.
+            path.
         </p>
     </div>
     <div id="boasting-card" class="card">
@@ -55,6 +85,8 @@
     }
 
     #cards-container {
+        cursor:grab;
+        user-select: none;
         padding: clamp(0.2rem, 3vw,2rem);
         width: 99%;
         display: grid;
@@ -68,7 +100,6 @@
         // height: 100;
         overflow: auto;
         gap: 5vw;
-        scroll-snap-type: x mandatory;
 
         #ranking-card {
             background-image: url("$lib/images/ranking_dark.png");
@@ -110,9 +141,16 @@
                 justify-self: end;
                 align-self: flex-end;
                 text-align: end;
-                max-height: 50%;
+                max-height: 85%;
                 overflow: hidden;
             }
         }
-    }
+      }
+
+      @media (hover:none), (pointer:none), (pointer: coarse) {
+        #cards-container {
+                scroll-snap-type: x mandatory;
+            }
+        }
+  
 </style>
