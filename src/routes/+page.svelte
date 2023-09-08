@@ -1,63 +1,145 @@
-<script>
+<script lang="ts">
+    const mainBg = "#1E1E1E";
+    const secondBg = "#3B3740";
     import gangIMG from "$lib/images/gang2_up_trans.png";
-    import SideScroll from "$lib/components/SideScroll.svelte"
+
+    import SideScroll from "$lib/components/SideScroll.svelte";
+    import { onMount } from "svelte";
+    import headerStore from "$lib/headerStore";
+    import cssSnapStore from "$lib/cssSnapStore";
+    $: headerHeight = `${$headerStore?.offsetHeight ?? 0}px`;
+
+    function cameleonHeader() {
+        if (window.scrollY == 0) {
+            document.body.style.backgroundColor = "#1E1E1E";
+            $headerStore.style.backgroundColor = "transparent";
+            $headerStore.style.borderBottom = "none";
+        } else {
+            const sections = Array.from(document.querySelectorAll("section"));
+            const headerPos = $headerStore.getBoundingClientRect().bottom;
+
+            let currentSection;
+            for (let i = sections.length - 1; i >= 0; i--) {
+                if (headerPos >= sections[i].getBoundingClientRect().top) {
+                    currentSection = sections[i];
+                    break;
+                }
+            }
+
+            // console.log(headerPos, currentSection?.dataset.bgColor);
+
+            // console.log(currentSection)
+            if (currentSection) {
+                $headerStore.style.backgroundColor =
+                    currentSection.dataset.bgColor;
+                document.body.style.backgroundColor =
+                    currentSection.dataset.bgColor || "";
+                $headerStore.style.borderBottom = "1px dashed black";
+            }
+        }
+    }
+    onMount(() => {
+        $cssSnapStore = true;
+
+        cameleonHeader();
+
+        window.addEventListener("scroll", cameleonHeader);
+        return () => {
+            window.removeEventListener("scroll", cameleonHeader);
+        };
+    });
+
+    function buyButton(e) {
+        const sections = Array.from(document.querySelectorAll("section"))
+            .reverse()
+            .map((section) => {
+                return section.getBoundingClientRect().top;
+            });
+        console.log(sections);
+    }
 </script>
 
-<header>
-    <h1>The Coding Bum</h1>
-    <button>Join Now</button>
-</header>
-<section id="hero">
-    <div id="copy-wrapper">
-        <div id="hero-copy">
-            <h2>Indulge in the Pinnacle of Generosity</h2>
-            <p class="trans-card">
-                Dear souls, a unique opportunity awaits you. To partake in an
-                act of benevolence that befits the elite. <br /><br /> Simply donate
-                a dollar - a trivial sum for the likes of you - and gain exclusive
-                access to a distinguished catalogue of kindred spirits.
-            </p>
-            <button>Donate Now</button>
+<div style="--header-height: {headerHeight};">
+    <section id="hero" data-bg-color={mainBg}>
+        <div id="copy-wrapper">
+            <div id="hero-copy">
+                <h2>Indulge in the Pinnacle of Generosity</h2>
+                <p class="trans-card">
+                    Dear souls, a unique opportunity awaits you. To partake in
+                    an act of benevolence that befits the elite. <br /><br /> Simply
+                    donate a dollar - a trivial sum for the likes of you - and gain
+                    exclusive access to a distinguished catalogue of kindred spirits.
+                </p>
+                <button on:click={buyButton}>Donate Now</button>
+            </div>
         </div>
-    </div>
 
-    <figure id="hero-img-wrp">
-        <img id="hero-img" src={gangIMG} alt="The Gang in a Circle" />
-    </figure>
+        <figure id="hero-img-wrp">
+            <img id="hero-img" src={gangIMG} alt="The Gang in a Circle" />
+        </figure>
 
-    <svg
-        id="hero-separator"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1575 269"
-        fill="none"
-        preserveAspectRatio="none"
+        <svg
+            id="hero-separator"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1575 269"
+            fill="none"
+            preserveAspectRatio="none"
+        >
+            <path
+                d="M1 1C171.242 0.999981 352.934 73.915 682.262 147.106C1015.47 221.159 997.909 284.205 1175.55 252.682C1353.2 221.159 1512.46 82.7859 1574 75.5542V268H1V1Z"
+                fill="#3B3740"
+                stroke="#3B3740"
+            />
+        </svg>
+    </section>
+    <section
+        id="what-you-get"
+        data-bg-color={secondBg}
+        class="center-section snap-start"
     >
-        <path
-            d="M1 1C171.242 0.999981 352.934 73.915 682.262 147.106C1015.47 221.159 997.909 284.205 1175.55 252.682C1353.2 221.159 1512.46 82.7859 1574 75.5542V268H1V1Z"
-            fill="#3B3740"
-            stroke="#3B3740"
-        />
-    </svg>
-</section>
-<section id="what-you-get">
-    <h2>What you shall gain from a single dollar:</h2>
-    <SideScroll/>
-
-</section>
+        <h2>What you shall gain from a single dollar:</h2>
+        <SideScroll />
+    </section>
+    <section id="tldr" class="center-section snap-start" data-bg-color={mainBg}>
+        <h2>TL;DR</h2>
+        <p>Give me a dollar to see who else did the same</p>
+    </section>
+    <section
+        id="dont-miss"
+        class="center-section snap-start"
+        data-bg-color={secondBg}
+    >
+        <div class="section-content">
+            <h2>Do Not Miss Out!</h2>
+            <p>
+                I’m so broke that this website might go down before you get the
+                chance to send me your hard earned money!
+            </p>
+            <h2>This is a limited time opportunity!</h2>
+        </div>
+        <footer>
+            <a href="/terms-of-service"
+                ><button class="small-button italic underline"
+                    >Terms of Service</button
+                ></a
+            >
+            <button class="small-button">Login</button>
+        </footer>
+    </section>
+</div>
 
 <style lang="scss">
-    section {
-        padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-        width: 100%;
+    .snap-start {
+        padding-top: var(--header-height) !important ;
+        scroll-snap-align: start;
     }
-
-    header {
-        padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    section {
+        // padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
+        box-sizing: border-box;
         width: 100%;
+        display: block;
+        text-align: center;
+        padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
     }
 
     #hero {
@@ -65,15 +147,12 @@
         height: max-content;
         width: 100%;
         display: grid;
-        // align-content: center;
-        // align-items: center;
         justify-content: center;
-
-        overflow-x: clip;
+        background-color: $main-bg;
+        z-index: -1;
+        // overflow-x: clip;
         position: relative;
-        // grid-template-rows: fit-content 1fr;
         grid-template-columns: minmax(275px, 0.75fr) 1fr;
-        // grid-template-rows: 1fr;
 
         #copy-wrapper {
             grid-row: 1/-1;
@@ -81,9 +160,9 @@
             padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
             display: flex;
             align-items: center;
-            // min-width: 400px;
             min-width: 280px;
             #hero-copy {
+                text-align: start;
                 display: flex;
                 flex-direction: column;
                 gap: 0.85rem;
@@ -109,26 +188,68 @@
             height: 10vw;
             bottom: -2px;
             z-index: -2;
-            width: 102%;
+            width: 100%;
         }
     }
 
     #what-you-get {
         width: 100%;
-        min-height: 50vh;
         // margin: ;
-        padding: 0;
+        // min-height: 100vh;
+        padding: clamp(0.2rem, 2vh, 1.5rem) 0;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        position: relative;
+        justify-content: center;
         background-color: var(--second-bg);
-        z-index: -2;
 
         h2 {
+            padding-top: 0.5ch;
             width: 20ch;
             text-align: center;
         }
+    }
+
+    #dont-miss {
+        background-color: $second-bg;
+        display: grid;
+        grid-template-rows: 1fr min-content;
+        width: 100%;
+        justify-content: stretch;
+
+        .section-content {
+            justify-self: center;
+            align-self: center;
+            display: grid;
+            gap: 1.5ch;
+            place-items: center;
+            margin-bottom: 3vh;
+            p {
+                max-width: 55ch;
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+                max-width: 25ch;
+            }
+        }
+        footer {
+            width: 100%;
+            align-self: flex-end;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+    }
+
+    .center-section {
+        h2 {
+            letter-spacing: 0.15ch;
+        }
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     @media only screen and (max-width: 770px) {

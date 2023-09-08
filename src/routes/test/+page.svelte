@@ -5,7 +5,10 @@
     import SideScroll from "$lib/components/SideScroll.svelte";
     import { getContext, onMount } from "svelte";
     import headerStore from "$lib/headerStore";
+    import Layout from "../+layout.svelte";
     $: headerHeight = `${($headerStore?.offsetHeight) ?? 0}px` 
+    const cssSnappingOn = true
+
     onMount(() => {
 
         function cameleonHeader() {
@@ -116,23 +119,9 @@
 </div>
 
 <style lang="scss">
-    // footer {
-    //     height: 5rem;
-    //     display: flex;
-    //     justify-content: space-evenly;
-    //     align-items: center;
-    // }
     .snap-start {
         padding-top: var(--header-height) !important ;
         scroll-snap-align: start;
-    }
-    section {
-        // padding: clamp(0.05rem, 4vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-        box-sizing: border-box;
-        width: 100%;
-        display: block;
-        text-align: center;
-        padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
     }
 
     #hero {
@@ -155,6 +144,7 @@
             align-items: center;
             min-width: 280px;
             #hero-copy {
+                text-align: left;
                 display: flex;
                 flex-direction: column;
                 gap: 0.85rem;

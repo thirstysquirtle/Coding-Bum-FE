@@ -1,16 +1,6 @@
 <script lang="ts">
     let lastMousePos = 0;
     let cardContainer: Element;
-    // function handleDown(e:MouseEvent) {
-    //     lastMousePos = e.clientX
-    //     console.log("test")
-
-    // }
-    // function handleUp (e:MouseEvent) {
-    //     const mouseTravel = lastMousePos - e.clientX
-    //     cardContainer.scrollLeft += mouseTravel
-
-    // }
 
     function handleMouse(e: MouseEvent) {
         e.preventDefault();
@@ -19,14 +9,11 @@
             const mouseTravel = lastMousePos - e.clientX;
 
             cardContainer.scrollTo({
-                left: cardContainer.scrollLeft + mouseTravel * 1.5,
+                left: cardContainer.scrollLeft + mouseTravel * 1.15,
             });
             lastMousePos = e.clientX;
             console.log(mouseTravel);
         } else {
-            // cardContainer.scrollTo({left: cardContainer.scrollLeft})
-            // cardContainer.style.scrollBehavior = "smooth"
-            // cardContainer.style.scrollSnapType = "x proximity"
             lastMousePos = e.clientX;
         }
     }

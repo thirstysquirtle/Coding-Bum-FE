@@ -22,7 +22,10 @@
 
 
 section {
-
+    width: 100%;
+    display: block;
+    text-align: center;
+    padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
 }
