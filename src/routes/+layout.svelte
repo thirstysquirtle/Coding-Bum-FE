@@ -4,19 +4,15 @@
     import { onNavigate } from "$app/navigation";
     import { fade } from "svelte/transition";
     import cssSnapStore from "$lib/cssSnapStore";    
-    // onNavigate((navigation) => {
-    //     if (!document.startViewTransition) return;
-
-    //     return new Promise((resolve) => {
-    //         document.startViewTransition(async () => {
-    //             resolve();
-    //             await navigation.complete;
-    //         });
-    //     });
-    // });
-    
+    import Payment from "$lib/components/Payment.svelte";
+    import Modal from "$lib/components/Modal.svelte";
+    import showModalStore from "$lib/showModalStore";
+    function showModal () {
+        $showModalStore = true
+    }
 </script>
 
+<Modal/>
 <div id="header-ghost" class={$cssSnapStore ? "snap" : ""}>
     <h1>The Coding Bum</h1>
     <button>Join Now</button>
@@ -24,7 +20,7 @@
 
 <header bind:this={$headerStore}>
     <a href="/"><h1>The Coding Bum</h1></a>
-    <button>Join Now</button>
+    <button on:click={showModal}>Join Now</button>
 </header>
 <slot />
 <style lang="scss">
@@ -42,7 +38,7 @@
         opacity: 0;
         width: 100%;
         padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
-        // visibility: hidden;
+        visibility: hidden;
         margin-bottom: 0.5vh;
     }
 

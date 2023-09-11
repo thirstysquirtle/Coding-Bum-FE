@@ -67,7 +67,7 @@
                 <p class="trans-card">
                     Dear souls, a unique opportunity awaits you. To partake in
                     an act of benevolence that befits the elite. <br /><br /> Simply
-                    donate a dollar - a trivial sum for the likes of you - and gain
+                    donate a dollar, a trivial sum for the likes of you, and gain
                     exclusive access to a distinguished catalogue of kindred spirits.
                 </p>
                 <button on:click={buyButton}>Donate Now</button>
@@ -101,8 +101,10 @@
         <SideScroll />
     </section>
     <section id="tldr" class="center-section snap-start" data-bg-color={mainBg}>
-        <h2>TL;DR</h2>
-        <p>Give me a dollar to see who else did the same</p>
+        <div>
+            <h2>TL;DR</h2>
+            <p>Give me a dollar to see who else did the same</p>
+        </div>
     </section>
     <section
         id="dont-miss"
@@ -192,6 +194,10 @@
         }
     }
 
+    #tldr > * {
+        margin-bottom: var(--header-height, 1em);
+    }
+
     #what-you-get {
         width: 100%;
         // margin: ;
@@ -218,7 +224,8 @@
 
         .section-content {
             justify-self: center;
-            align-self: center;
+            align-self: flex-start;
+            padding-top: 5ch;
             display: grid;
             gap: 1.5ch;
             place-items: center;
@@ -242,9 +249,6 @@
     }
 
     .center-section {
-        h2 {
-            letter-spacing: 0.15ch;
-        }
         min-height: 100vh;
         display: flex;
         flex-direction: column;

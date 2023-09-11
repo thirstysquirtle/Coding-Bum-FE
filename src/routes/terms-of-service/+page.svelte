@@ -10,7 +10,7 @@
 </script>
 
 <section>
-    <h1>Terms of Service</h1>
+    <h2>Terms of Use</h2>
     <p>
         At all times, nothing is guaranteed to work. You agree to not hold The
         Coding Bum liable for any issues involved with the website.
@@ -19,10 +19,25 @@
         We reserve the right to terminate or suspend your access to the Website
         at our sole discretion, with or without cause, and without notice.
     </p>
+    <p>
+        Payments are handle by Stripe. Your payment information never comes into contact with us.
+    </p>
+    <footer>
+        <a href="/terms-of-service"
+            ><button class="small-button italic underline"
+                >Terms of Service</button
+            ></a
+        >
+        <button class="small-button">Login</button>
+    </footer>
 </section>
 
 <style lang="scss">
+    footer {
+        margin-top: 3em;
+    }
     section {
+        
         padding-top: 3ch;
         // min-height: 200vh;
         display: flex;
@@ -34,7 +49,7 @@
         }
         p {
             max-width: 60ch;
-            letter-spacing: 0.15ch;
+            // letter-spacing: 0.15ch;
         }
     }
 </style>

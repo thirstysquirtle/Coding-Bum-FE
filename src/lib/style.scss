@@ -6,7 +6,7 @@
     --accent-color: #FCD46C;
     --dark-text: black;
     --big-font:'Merriweather', serif; ; 
-    --inconsolata: 'Inconsolata', monospace;
+    --inconsolata: "Inconsolata", sans-serif,monospace;
     
 }
 
@@ -71,6 +71,7 @@ h1 {
 
 h2 {
     font-size: clamp(1.15rem, 2.3vw, 3.5rem);
+    letter-spacing: 0.125ch;
 
     font-family: var(--big-font);
     font-weight: lighter;
@@ -91,10 +92,67 @@ p {
 
 }
 
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.15;
+    font-weight: 600;
+    font-family: var(--inconsolata);
+}
+
+input::placeholder {
+    color: #727F96;
+}
+
+
+input:active,
+input:focus {
+    outline: 0px;
+    border-color: hsla(36, 79%, 70%, 40%);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5),
+        0px 1px 6px rgba(0, 0, 0, 0.25), 0 0 0 3px hsla(36, 79%, 70%, 25%),
+        0 1px 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+
+input {
+    font-family: var(--inconsolata);
+    // letter-spacing:0.05ch;
+    line-height: 1.15;
+    margin-bottom: 0.5em;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1.5px solid #fcd46c;
+    font-weight: 500;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    padding: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: background 0.15s ease, border 0.15s ease,
+        box-shadow 0.15s ease, color 0.15s ease;
+    border: 1.5px solid #fcd46c;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5),
+        0px 1px 6px rgba(0, 0, 0, 0.25);
+}
+
 .italic {
     font-style: italic;
 }
 
 .underline {
     text-decoration: underline;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
