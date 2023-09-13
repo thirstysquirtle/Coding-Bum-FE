@@ -1,15 +1,21 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import {paymentFlowStore, paymentFlowStep} from "$lib/paymentFlowStore";
 
     // This is your test publishable API key.
     let stripe: any;
     let emailAddress = "";
-    let name =""
+    let name = "";
     let elements: any;
     let messageContainer: Element;
     let loading = true;
     let pi;
     export let price: number;
+
+    type myPaymentIntent = {
+        id: string;
+        amount: number;
+    };
     // The items the customer wants to buy
     // #region logic
     onMount(() => {
@@ -17,9 +23,7 @@
             "pk_test_51NXI07EcYmsYVNOje5HMFh6hFo03lyFd0UYPT62VZHnjSb23HcvO3jQuwe0RUwRY4496ZlCenBX2ZDAwvGGeTUWr000cx3JGMU"
         );
         initialize();
-        // checkStatus();
-    })
-    
+    });
 
     // Fetches a payment intent and captures the client secret
     async function initialize() {
@@ -28,7 +32,10 @@
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify( {donationAmt: price*100,  productId: "prod_OcF13vLlooHkz2"}),
+                body: JSON.stringify({
+                    donationAmt: price * 100,
+                    productId: "prod_OcF13vLlooHkz2",
+                }),
             }
         );
         const { clientSecret } = await response.json();
@@ -75,7 +82,6 @@
         paymentElement.mount("#payment-element");
 
         loading = false;
-
     }
 
     async function handleSubmit(e: Event) {
@@ -83,7 +89,7 @@
         // setLoading(true);
         loading = true;
 
-        const { error, paymentIntent  } = await stripe.confirmPayment({
+        const { error, paymentIntent } = await stripe.confirmPayment({
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
@@ -91,14 +97,13 @@
                 receipt_email: emailAddress,
             },
             redirect: "if_required",
-
         });
 
-        
         if (paymentIntent && paymentIntent.status === "succeeded") {
-            console.log("succ")
-            pi = paymentIntent
-            showMessage("Payment succeeded!")
+            console.log("succ");
+            pi = paymentIntent;
+            showMessage("Payment succeeded!");
+            storePayment(pi)
         }
 
         // This point will only be reached if there is an immediate error when
@@ -107,16 +112,51 @@
         // be redirected to an intermediate site first to authorize the payment, then
         // redirected to the `return_url`.
         if (error) {
-        if (error.type === "card_error" || error.type === "validation_error") {
-            showMessage(error.message);
-        } else {
-            showMessage("An unexpected error occurred.");
+            if (
+                error.type === "card_error" ||
+                error.type === "validation_error"
+            ) {
+                showMessage(error.message);
+            } else {
+                showMessage("An unexpected error occurred.");
+            }
         }
     }
-        loading = false;
-        // setLoading(false);
-    }
 
+    async function storePayment(paymentIntent: myPaymentIntent) {
+        const url = "http://localhost:3000/payment-success";
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(paymentIntent),
+        };
+        fetch(url, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json(); // Parse the response as JSON
+            })
+            .then((data) => {
+                // Handle the response data here
+                console.log(data);
+                if (data.Status == "success") {
+                    $paymentFlowStore = paymentFlowStep.SetPassword
+                }
+                else {
+                    $paymentFlowStore = paymentFlowStep.Fail
+                }
+            })
+            .catch((error) => {
+                // Handle any errors that occurred during the fetch
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }
     // #region uselessfunc
     // Fetches the payment intent status after payment submission
     // async function checkStatus() {
@@ -132,7 +172,7 @@
     //         clientSecret
     //     );
     //     pi = paymentIntent
-        
+
     //     switch (paymentIntent.status) {
     //         case "succeeded":
     //             showMessage("Payment succeeded!");
@@ -150,20 +190,19 @@
     //             break;
     //     }
     // }
-    // #endregion 
-
+    // #endregion
 
     // ------- UI helper ------
     function showMessage(messageText: string) {
-        messageContainer.classList.remove("hidden");
+        messageContainer?.classList.remove("hidden");
         messageContainer.textContent = messageText;
 
         setTimeout(function () {
-            messageContainer.classList.add("hidden");
+            messageContainer?.classList.add("hidden");
             messageContainer.textContent = "";
         }, 4000);
     }
-    // #endregion logic
+    // #endregion
 </script>
 
 <!-- Display a payment form -->
@@ -198,7 +237,12 @@
     </button>
     <div bind:this={messageContainer} id="payment-message" class="hidden" />
 </form>
-<button on:click={()=> {console.log(pi)}}>test</button>
+<button
+    on:click={() => {
+        console.log(pi);
+    }}>test</button
+>
+
 <style lang="scss">
     form {
         width: min(100%, 600px);
@@ -211,8 +255,6 @@
         padding: 40px;
         background-color: $second-bg;
     }
-
-    
 
     #payment-message {
         color: rgb(236, 237, 238);

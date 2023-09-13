@@ -2,16 +2,9 @@
     import showModalStore from "$lib/showModalStore";
     import { onMount } from "svelte";
     import Payment from "./Payment.svelte";
+    import { paymentFlowStep, paymentFlowStore } from "$lib/paymentFlowStore";
 
-    /**
-     * An object representing different steps in a process.
-     * @readonly
-     * @enum {string}
-     */
-    const Steps = {
-        SettingPrice: "SettingPrice",
-        Checkout: "Checkout",
-    };
+   
     const NAV_KEYS = new Set([
         "Backspace",
         "ArrowLeft",
@@ -36,9 +29,8 @@
         ".",
     ]);
 
-    let currentStep: any;
     $: if ($showModalStore) {
-        currentStep = Steps.SettingPrice;
+        $paymentFlowStore = paymentFlowStep.SetPrice;
     }
     $: if (donationAmount[0] !== "$") {
         donationAmount = "$";
@@ -71,10 +63,13 @@
     }
 
     function closeModal() {
+        console.log(paymentFlowStep, $paymentFlowStore)
+
         $showModalStore = false;
     }
     function goCheckout() {
-        if (Number(donationAmount.slice(1)) >= 1) currentStep = Steps.Checkout; else {
+
+        if (Number(donationAmount.slice(1)) >= 1) $paymentFlowStore = paymentFlowStep.Checkout; else {
             shakeThis.classList.add("shake")
             setTimeout(()=>shakeThis.classList.remove("shake"), 250)
         }
@@ -86,7 +81,7 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div id="modal" on:click|self={closeModal}>
         <section id="content">
-            {#if currentStep == Steps.SettingPrice}
+            {#if $paymentFlowStore == paymentFlowStep.SetPrice}
                 <div id="setPriceForm">
                     <p>Very well. <br /> Your ascent now commences.</p>
                     <p>But first, how much will you pledge to the Bum?</p>
@@ -97,7 +92,7 @@
                     />
                     <button on:click={goCheckout}>Donate</button>
                 </div>
-            {:else if currentStep == Steps.Checkout}
+            {:else if $paymentFlowStore == paymentFlowStep.Checkout}
                 <Payment price={Number(donationAmount.slice(1))} />
             {/if}
         </section>
