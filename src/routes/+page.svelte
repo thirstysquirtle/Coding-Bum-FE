@@ -7,6 +7,9 @@
     import { onMount } from "svelte";
     import headerStore from "$lib/headerStore";
     import cssSnapStore from "$lib/cssSnapStore";
+    import Footer from "$lib/components/Footer.svelte";
+    import showModalStore from "$lib/showModalStore";
+
     $: headerHeight = `${$headerStore?.offsetHeight ?? 0}px`;
 
     function cameleonHeader() {
@@ -49,14 +52,6 @@
         };
     });
 
-    function buyButton(e) {
-        const sections = Array.from(document.querySelectorAll("section"))
-            .reverse()
-            .map((section) => {
-                return section.getBoundingClientRect().top;
-            });
-        console.log(sections);
-    }
 </script>
 
 <div style="--header-height: {headerHeight};">
@@ -70,7 +65,7 @@
                     donate a dollar, a trivial sum for the likes of you, and gain
                     exclusive access to a distinguished catalogue of kindred spirits.
                 </p>
-                <button on:click={buyButton}>Donate Now</button>
+                    <button on:click={()=> {$showModalStore = true; console.log("test")}}>Donate Now</button>
             </div>
         </div>
 
@@ -89,6 +84,7 @@
                 d="M1 1C171.242 0.999981 352.934 73.915 682.262 147.106C1015.47 221.159 997.909 284.205 1175.55 252.682C1353.2 221.159 1512.46 82.7859 1574 75.5542V268H1V1Z"
                 fill="#3B3740"
                 stroke="#3B3740"
+                stroke-width="2px"
             />
         </svg>
     </section>
@@ -119,14 +115,8 @@
             </p>
             <h2>This is a limited time opportunity!</h2>
         </div>
-        <footer>
-            <a href="/terms-of-service"
-                ><button class="small-button italic underline"
-                    >Terms of Service</button
-                ></a
-            >
-            <button class="small-button">Login</button>
-        </footer>
+    <Footer/>
+        
     </section>
 </div>
 
@@ -151,11 +141,10 @@
         display: grid;
         justify-content: center;
         background-color: $main-bg;
-        z-index: -1;
         // overflow-x: clip;
         position: relative;
         grid-template-columns: minmax(275px, 0.75fr) 1fr;
-
+        z-index: 1;
         #copy-wrapper {
             grid-row: 1/-1;
             grid-column: 1/2;
@@ -175,14 +164,14 @@
             grid-row: 1/-1;
             grid-column: 2/3;
             margin-left: -4rem;
-            z-index: -5;
+            z-index: -10;
 
             #hero-img {
                 width: 70vw;
                 position: absolute;
                 top: -20vw;
                 right: 0px;
-                z-index: -3;
+                z-index: -5;
             }
         }
         #hero-separator {
@@ -200,6 +189,8 @@
 
     #what-you-get {
         width: 100%;
+        position:relative;
+        z-index: 5;
         // margin: ;
         // min-height: 100vh;
         padding: clamp(0.2rem, 2vh, 1.5rem) 0;
@@ -239,13 +230,7 @@
                 max-width: 25ch;
             }
         }
-        footer {
-            width: 100%;
-            align-self: flex-end;
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-        }
+       
     }
 
     .center-section {

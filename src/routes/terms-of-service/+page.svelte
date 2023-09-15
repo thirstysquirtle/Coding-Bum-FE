@@ -1,6 +1,7 @@
 <script>
     import cssSnapStore from "$lib/cssSnapStore";
     import headerStore from "$lib/headerStore";
+    import Footer from "$lib/components/Footer.svelte";
     import { onMount } from "svelte";
     onMount(() => {
         $cssSnapStore = false;
@@ -20,22 +21,14 @@
         at our sole discretion, with or without cause, and without notice.
     </p>
     <p>
-        Payments are handle by Stripe. Your payment information never comes into contact with us.
+        Payments are handled by Stripe. Your payment information never comes into contact with us.
     </p>
-    <footer>
-        <a href="/terms-of-service"
-            ><button class="small-button italic underline"
-                >Terms of Service</button
-            ></a
-        >
-        <button class="small-button">Login</button>
-    </footer>
+    <Footer/>
+
 </section>
 
 <style lang="scss">
-    footer {
-        margin-top: 3em;
-    }
+    
     section {
         
         padding-top: 3ch;
@@ -44,9 +37,6 @@
         flex-direction: column;
         gap: 1ch;
         align-items: center;
-        h1 {
-            color: $accent-color;
-        }
         p {
             max-width: 60ch;
             // letter-spacing: 0.15ch;

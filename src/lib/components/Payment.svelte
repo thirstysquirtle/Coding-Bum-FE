@@ -1,21 +1,17 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import {paymentFlowStore, paymentFlowStep} from "$lib/paymentFlowStore";
+    export let paymentId = "";
 
-    // This is your test publishable API key.
     let stripe: any;
     let emailAddress = "";
     let name = "";
     let elements: any;
     let messageContainer: Element;
     let loading = true;
-    let pi;
     export let price: number;
 
-    type myPaymentIntent = {
-        id: string;
-        amount: number;
-    };
+
     // The items the customer wants to buy
     // #region logic
     onMount(() => {
@@ -28,7 +24,7 @@
     // Fetches a payment intent and captures the client secret
     async function initialize() {
         const response = await fetch(
-            "http://localhost:3000/create-payment-intent",
+            "/api/create-payment-intent",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -93,17 +89,16 @@
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: `http://localhost:3000/account-creation-success?email=${emailAddress}&username=${name}`,
                 receipt_email: emailAddress,
             },
             redirect: "if_required",
         });
 
         if (paymentIntent && paymentIntent.status === "succeeded") {
-            console.log("succ");
-            pi = paymentIntent;
+            console.log("succ", paymentIntent);
+            
             showMessage("Payment succeeded!");
-            storePayment(pi)
+            storePayment(paymentIntent)
         }
 
         // This point will only be reached if there is an immediate error when
@@ -121,17 +116,31 @@
                 showMessage("An unexpected error occurred.");
             }
         }
+        loading = false
     }
+    type createAccBody = {
+        id:string,
+        receipt_email: string
+        amount: number
+    }
+    async function storePayment(paymentInt :createAccBody) {
+        paymentId = paymentInt.id
+        const body = {
+            id: paymentInt.id,
+            receipt_email: paymentInt.receipt_email,
+            username: name,
+            amount: paymentInt.amount,
 
-    async function storePayment(paymentIntent: myPaymentIntent) {
-        const url = "http://localhost:3000/payment-success";
+        }
+        const url = "/api/payment-success";
         const requestOptions = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(paymentIntent),
+            body: JSON.stringify(body),
         };
+        console.log(body)
         fetch(url, requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -142,8 +151,10 @@
             .then((data) => {
                 // Handle the response data here
                 console.log(data);
-                if (data.Status == "success") {
+                console.log(data.status)
+                if (data.status == "success") {
                     $paymentFlowStore = paymentFlowStep.SetPassword
+                    
                 }
                 else {
                     $paymentFlowStore = paymentFlowStep.Fail
@@ -208,6 +219,7 @@
 <!-- Display a payment form -->
 <form on:submit|preventDefault={handleSubmit} id="payment-form">
     <h2>${price.toFixed(2)} -- No Refunds 😈</h2>
+    <div>
     <label for="email">Email</label>
     <input
         bind:value={emailAddress}
@@ -218,6 +230,8 @@
         required
         autocomplete="off"
     />
+</div>
+<div>
     <label for="name">Name</label>
     <input
         bind:value={name}
@@ -228,6 +242,7 @@
         required
         autocomplete="off"
     />
+    </div>
     <div id="payment-element">
         <!--Stripe.js injects the Payment Element-->
     </div>
@@ -239,12 +254,14 @@
 </form>
 <button
     on:click={() => {
-        console.log(pi);
+        console.log("gts");
     }}>test</button
 >
 
 <style lang="scss">
     form {
+        display: grid;
+        gap: 0.5em;
         width: min(100%, 600px);
         align-self: center;
         text-align: start;

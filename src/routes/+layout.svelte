@@ -7,6 +7,16 @@
     import Payment from "$lib/components/Payment.svelte";
     import Modal from "$lib/components/Modal.svelte";
     import showModalStore from "$lib/showModalStore";
+    import { onMount } from "svelte";
+    import { getCookie, deleteCookie, setCookie} from "$lib/cookieFuncs"
+
+    let loggedIn 
+    onMount(() => {
+        loggedIn = getCookie("loggedIn")
+        console.log(getCookie("loggedIn"))
+        // deleteCookie("ses")
+    })
+
     function showModal () {
         $showModalStore = true
     }
@@ -15,12 +25,22 @@
 <Modal/>
 <div id="header-ghost" class={$cssSnapStore ? "snap" : ""}>
     <h1>The Coding Bum</h1>
+    {#if loggedIn}
+        <button>Enter</button>
+    {:else}
     <button>Join Now</button>
+
+    {/if}
 </div>
 
 <header bind:this={$headerStore}>
     <a href="/"><h1>The Coding Bum</h1></a>
+    {#if loggedIn}
+        <button on:click={() => {window.location.href ="/super-cool-kids"}} >Enter</button>
+    {:else}
     <button on:click={showModal}>Join Now</button>
+
+    {/if}
 </header>
 <slot />
 <style lang="scss">

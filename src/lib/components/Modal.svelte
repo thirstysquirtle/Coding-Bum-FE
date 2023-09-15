@@ -3,8 +3,8 @@
     import { onMount } from "svelte";
     import Payment from "./Payment.svelte";
     import { paymentFlowStep, paymentFlowStore } from "$lib/paymentFlowStore";
+    import { redirect } from "@sveltejs/kit";
 
-   
     const NAV_KEYS = new Set([
         "Backspace",
         "ArrowLeft",
@@ -31,6 +31,7 @@
 
     $: if ($showModalStore) {
         $paymentFlowStore = paymentFlowStep.SetPrice;
+        password = ""
     }
     $: if (donationAmount[0] !== "$") {
         donationAmount = "$";
@@ -62,16 +63,57 @@
         }
     }
 
+    let showPass = false;
+    let password = "";
+    let paymentId: string;
+    function setPassword() {
+        const url = "/api/init-password";
+        const requestOptions = {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ assword: password, paymentId: paymentId  }),
+        };
+        fetch(url, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json(); // Parse the response as JSON
+            })
+            .then((data) => {
+                // Handle the response data here
+                console.log(data);
+                if (data.status == "success") {
+                    // $paymentFlowStore = paymentFlowStep.SetPrice;
+                    // $showModalStore = false;
+                    window.location.href = "/super-cool-kids";
+                    
+                } else {
+                    $paymentFlowStore = paymentFlowStep.Fail;
+                }
+            })
+            .catch((error) => {
+                // Handle any errors that occurred during the fetch
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }
     function closeModal() {
-        console.log(paymentFlowStep, $paymentFlowStore)
+        console.log(paymentFlowStep, $paymentFlowStore);
 
         $showModalStore = false;
     }
     function goCheckout() {
-
-        if (Number(donationAmount.slice(1)) >= 1) $paymentFlowStore = paymentFlowStep.Checkout; else {
-            shakeThis.classList.add("shake")
-            setTimeout(()=>shakeThis.classList.remove("shake"), 250)
+        if (Number(donationAmount.slice(1)) >= 1)
+            $paymentFlowStore = paymentFlowStep.Checkout;
+        else {
+            shakeThis.classList.add("shake");
+            setTimeout(() => shakeThis.classList.remove("shake"), 250);
         }
     }
 </script>
@@ -82,10 +124,13 @@
     <div id="modal" on:click|self={closeModal}>
         <section id="content">
             {#if $paymentFlowStore == paymentFlowStep.SetPrice}
-                <div id="setPriceForm">
+                <div class="form" id="setPrice">
+                    <div>
                     <p>Very well. <br /> Your ascent now commences.</p>
                     <p>But first, how much will you pledge to the Bum?</p>
+                </div>
                     <input
+                    type="text"
                         bind:this={shakeThis}
                         bind:value={donationAmount}
                         on:keydown={validateDonation}
@@ -93,19 +138,57 @@
                     <button on:click={goCheckout}>Donate</button>
                 </div>
             {:else if $paymentFlowStore == paymentFlowStep.Checkout}
-                <Payment price={Number(donationAmount.slice(1))} />
+                <Payment bind:paymentId={paymentId} price={Number(donationAmount.slice(1))} />
+            {:else if $paymentFlowStore == paymentFlowStep.SetPassword}
+                <div id="setPass" class="form">
+                    <h2>Set Your Password</h2>
+                    <p>Your account has been created.</p>
+                    <input type="{showPass ? "text":"password"}"
+                        on:keydown={(e) => {
+                            if (e.key == "Enter") setPassword();
+                            password = e.target.value;
+                        }}
+                    />
+                    <div class="show-pass-checkbox">
+                    <input bind:checked={showPass} type="checkbox" name="showPass" id="showPass">
+                    <label for="showPass">show password</label>
+                </div>
+                    <button on:click={setPassword}>Submit</button>
+                </div>
+            {:else if $paymentFlowStore == paymentFlowStep.Fail}
+                <h2>Something went wrong with your payment. Contact placeholder@placeholder.com</h2>
             {/if}
         </section>
     </div>
 {/if}
 
 <style lang="scss">
-    #setPriceForm {
+    .show-pass-checkbox {
+        margin: 0.5ch;
+        display: flex;
+        align-items: center;
+        gap: 1ch;
+        label {
+            cursor: pointer;
+            user-select: none;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    #setPrice {
+        width: min(30em, 98%);
+    }
+    #setPass {
+        width: min(55em, 98%);
+        
+    }
+    .form {
+        display: grid;
+        gap: 0.5rem;
         text-align: center;
         border-radius: 1em;
         padding: 3ch 5ch;
         background-color: $second-bg;
-        width: min(30em, 100%);
         p {
             margin-bottom: 0.5em;
         }
