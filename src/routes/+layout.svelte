@@ -63,6 +63,7 @@
     }
 
     header {
+        user-select: none;
         z-index: 10;
         padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
         // height: 5rem;

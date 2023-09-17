@@ -11,13 +11,13 @@
 <footer>
     <a href="/terms-of-service"
         ><button class="small-button italic underline"
-            >Terms of Service</button
-        ></a
+            >Terms of Service</button>
+        </a
     >
     {#if loggedIn }
     <button on:click={() => {deleteCookie("loggedIn"); window.location.reload()}} class="small-button">Logout</button>
     {:else}
-    <a href="/login"><button class="small-button">Login</button></a>
+     <a href="/login"><button class="small-button">Login</button></a>
         
     {/if}
 </footer>

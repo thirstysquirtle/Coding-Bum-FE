@@ -15,7 +15,7 @@
 
 </div>
 </form>
-<a href="/reset-password">Forgot Your Password?</a>
+<a data-sveltekit-reload href="/reset-password">Forgot Your Password?</a>
 </section>
 <style>
     section {
