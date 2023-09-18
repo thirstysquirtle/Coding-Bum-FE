@@ -9,12 +9,17 @@
     import showModalStore from "$lib/showModalStore";
     import { onMount } from "svelte";
     import { getCookie, deleteCookie, setCookie} from "$lib/cookieFuncs"
+    import type { Element } from "svelte/types/compiler/interfaces";
 
-    let loggedIn 
+    let loggedIn = "";
+    let headerGhost: HTMLDivElement;
     onMount(() => {
+        if(!$cssSnapStore) {
+            headerGhost.classList.remove("snap")
+        } else if ($cssSnapStore) {
+            headerGhost.classList.add("snap")
+        }
         loggedIn = getCookie("loggedIn")
-        console.log(getCookie("loggedIn"))
-        // deleteCookie("ses")
     })
 
     function showModal () {
@@ -23,7 +28,7 @@
 </script>
 
 <Modal/>
-<div id="header-ghost" class={$cssSnapStore ? "snap" : ""}>
+<div bind:this={headerGhost}  id="header-ghost" class="snap">
     <h1>The Coding Bum</h1>
     {#if loggedIn}
         <button>Enter</button>

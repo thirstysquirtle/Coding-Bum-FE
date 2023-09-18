@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		proxy: {
-			'/api': {
+			'https://api.thecodingbum.com': {
 				target: "http://127.0.0.1:3000",
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ''),
