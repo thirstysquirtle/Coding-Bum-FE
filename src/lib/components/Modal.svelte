@@ -67,7 +67,7 @@
     let password = "";
     let paymentId: string;
     function setPassword() {
-        const url = "/api/init-password";
+        const url = "https://api.thecodingbum.com/init-password";
         const requestOptions = {
             method: "POST",
             credentials: "include",

@@ -7,7 +7,7 @@ import { deleteCookie } from "$lib/cookieFuncs";
     let you = null;
     onMount(() => {
         let responseClone;
-        const url = "/api/super-cool-kids-list";
+        const url = "https://api.thecodingbum.com/super-cool-kids-list";
         const requestOptions = {
             method: "GET",
         };

@@ -24,7 +24,7 @@
     // Fetches a payment intent and captures the client secret
     async function initialize() {
         const response = await fetch(
-            "/api/create-payment-intent",
+            "https://api.thecodingbum.com/create-payment-intent",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -132,7 +132,7 @@
             amount: paymentInt.amount,
 
         }
-        const url = "/api/payment-success";
+        const url = "https://api.thecodingbum.com/payment-success";
         const requestOptions = {
             method: "POST",
             headers: {

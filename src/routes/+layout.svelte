@@ -13,12 +13,12 @@
 
     let loggedIn = "";
     let headerGhost: HTMLDivElement;
+    $:if(!$cssSnapStore) {
+            headerGhost?.classList.remove("snap")
+    }else  {
+            headerGhost?.classList.add("snap")
+    }
     onMount(() => {
-        if(!$cssSnapStore) {
-            headerGhost.classList.remove("snap")
-        } else if ($cssSnapStore) {
-            headerGhost.classList.add("snap")
-        }
         loggedIn = getCookie("loggedIn")
     })
 
