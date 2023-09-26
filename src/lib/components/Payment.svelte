@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, setContext } from "svelte";
     import {paymentFlowStore, paymentFlowStep} from "$lib/paymentFlowStore";
+    import { PUBLIC_API_ENDPOINT } from "$env/static/public";
     export let paymentId = "";
 
     let stripe: any;
@@ -24,7 +25,7 @@
     // Fetches a payment intent and captures the client secret
     async function initialize() {
         const response = await fetch(
-            "https://api.thecodingbum.com/create-payment-intent",
+            `${PUBLIC_API_ENDPOINT}/create-payment-intent`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -95,7 +96,7 @@
         });
 
         if (paymentIntent && paymentIntent.status === "succeeded") {
-            console.log("succ", paymentIntent);
+            // console.log("succ", paymentIntent);
             
             showMessage("Payment succeeded!");
             storePayment(paymentIntent)
@@ -132,7 +133,7 @@
             amount: paymentInt.amount,
 
         }
-        const url = "https://api.thecodingbum.com/payment-success";
+        const url = `${PUBLIC_API_ENDPOINT}/payment-success`;
         const requestOptions = {
             method: "POST",
             headers: {
@@ -140,7 +141,6 @@
             },
             body: JSON.stringify(body),
         };
-        console.log(body)
         fetch(url, requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -149,9 +149,6 @@
                 return response.json(); // Parse the response as JSON
             })
             .then((data) => {
-                // Handle the response data here
-                console.log(data);
-                console.log(data.status)
                 if (data.status == "success") {
                     $paymentFlowStore = paymentFlowStep.SetPassword
                     
@@ -161,56 +158,22 @@
                 }
             })
             .catch((error) => {
-                // Handle any errors that occurred during the fetch
                 console.error(
                     "There was a problem with the fetch operation:",
                     error
                 );
             });
     }
-    // #region uselessfunc
-    // Fetches the payment intent status after payment submission
-    // async function checkStatus() {
-    //     const clientSecret = new URLSearchParams(window.location.search).get(
-    //         "payment_intent_client_secret"
-    //     );
-
-    //     if (!clientSecret) {
-    //         return;
-    //     }
-
-    //     const { paymentIntent } = await stripe.retrievePaymentIntent(
-    //         clientSecret
-    //     );
-    //     pi = paymentIntent
-
-    //     switch (paymentIntent.status) {
-    //         case "succeeded":
-    //             showMessage("Payment succeeded!");
-    //             break;
-    //         case "processing":
-    //             showMessage("Your payment is processing.");
-    //             break;
-    //         case "requires_payment_method":
-    //             showMessage(
-    //                 "Your payment was not successful, please try again."
-    //             );
-    //             break;
-    //         default:
-    //             showMessage("Something went wrong.");
-    //             break;
-    //     }
-    // }
-    // #endregion
-
-    // ------- UI helper ------
+   
     function showMessage(messageText: string) {
         messageContainer?.classList.remove("hidden");
         messageContainer.textContent = messageText;
 
         setTimeout(function () {
-            messageContainer?.classList.add("hidden");
+            if (messageContainer) {
+            messageContainer.classList.add("hidden");
             messageContainer.textContent = "";
+            }
         }, 4000);
     }
     // #endregion
@@ -234,6 +197,7 @@
 <div>
     <label for="name">Name</label>
     <input
+    maxlength="20"
         bind:value={name}
         type="text"
         name="name"
@@ -251,12 +215,9 @@
         <span id="button-text" class={loading ? "hidden" : ""}>Pay now</span>
     </button>
     <div bind:this={messageContainer} id="payment-message" class="hidden" />
+    <p>Test Card: "4242424242424242"</p>
 </form>
-<button
-    on:click={() => {
-        console.log("gts");
-    }}>test</button
->
+
 
 <style lang="scss">
     form {

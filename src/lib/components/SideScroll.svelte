@@ -12,7 +12,6 @@
                 left: cardContainer.scrollLeft + mouseTravel * 1.15,
             });
             lastMousePos = e.clientX;
-            console.log(mouseTravel);
         } else {
             lastMousePos = e.clientX;
         }

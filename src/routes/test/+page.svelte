@@ -1,9 +1,9 @@
 <script>
-
+import {PUBLIC_API_ENDPOINT} from "$env/static/public";
 let test = "nothing happened"
 
 async function handleClick () {
-    const text = await fetchGetJSON("https://api.thecodingbum.com/test")
+    const text = await fetchGetJSON(`${PUBLIC_API_ENDPOINT}/test`)
 
     test = text
 

@@ -14,7 +14,7 @@
     <h2>Terms of Use</h2>
     <p>
         At all times, nothing is guaranteed to work. You agree to not hold The
-        Coding Bum liable for any issues involved with the website.
+        Coding Bum liable for any issues involved with the website. <br> You might not want to enter your "serioius" email address.
     </p>
     <p>
         We reserve the right to terminate or suspend your access to the Website

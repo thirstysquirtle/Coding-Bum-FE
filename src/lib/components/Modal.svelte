@@ -1,9 +1,10 @@
 <script lang="ts">
     import showModalStore from "$lib/showModalStore";
-    import { onMount } from "svelte";
+    import { getContext, onMount, setContext } from "svelte";
     import Payment from "./Payment.svelte";
     import { paymentFlowStep, paymentFlowStore } from "$lib/paymentFlowStore";
     import { redirect } from "@sveltejs/kit";
+    import { PUBLIC_API_ENDPOINT } from "$env/static/public";
 
     const NAV_KEYS = new Set([
         "Backspace",
@@ -31,7 +32,6 @@
 
     $: if ($showModalStore) {
         $paymentFlowStore = paymentFlowStep.SetPrice;
-        password = ""
     }
     $: if (donationAmount[0] !== "$") {
         donationAmount = "$";
@@ -62,12 +62,11 @@
             return;
         }
     }
-
     let showPass = false;
-    let password = "";
+    let passwordInput;
     let paymentId: string;
-    function setPassword() {
-        const url = "https://api.thecodingbum.com/init-password";
+    function setPassword(password) {
+        const url = `${PUBLIC_API_ENDPOINT}/init-password`;
         const requestOptions = {
             method: "POST",
             credentials: "include",
@@ -85,14 +84,15 @@
             })
             .then((data) => {
                 // Handle the response data here
-                console.log(data);
-                if (data.status == "success") {
+                // console.log(data);
+                if (data["go-to"] != undefined) {
                     // $paymentFlowStore = paymentFlowStep.SetPrice;
                     // $showModalStore = false;
-                    window.location.href = "/super-cool-kids";
+                    window.location.href = data["go-to"];
                     
                 } else {
                     $paymentFlowStore = paymentFlowStep.Fail;
+               
                 }
             })
             .catch((error) => {
@@ -104,7 +104,6 @@
             });
     }
     function closeModal() {
-        console.log(paymentFlowStep, $paymentFlowStore);
 
         $showModalStore = false;
     }
@@ -121,7 +120,8 @@
 {#if $showModalStore}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div id="modal" on:click|self={closeModal}>
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <aside id="modal" on:click|self={closeModal}>
         <section id="content">
             {#if $paymentFlowStore == paymentFlowStep.SetPrice}
                 <div class="form" id="setPrice">
@@ -144,22 +144,22 @@
                     <h2>Set Your Password</h2>
                     <p>Your account has been created.</p>
                     <input type="{showPass ? "text":"password"}"
+                        bind:this={passwordInput}
                         on:keydown={(e) => {
-                            if (e.key == "Enter") setPassword();
-                            password = e.target.value;
+                            if (e.key == "Enter") setPassword(passwordInput.value);
                         }}
                     />
                     <div class="show-pass-checkbox">
                     <input bind:checked={showPass} type="checkbox" name="showPass" id="showPass">
                     <label for="showPass">show password</label>
                 </div>
-                    <button on:click={setPassword}>Submit</button>
+                    <button on:click={() => setPassword(passwordInput.value)}>Submit</button>
                 </div>
             {:else if $paymentFlowStore == paymentFlowStep.Fail}
-                <h2>Something went wrong with your payment. Contact placeholder@placeholder.com</h2>
+                <h2>Something went wrong with your payment. You may contact placeholder@placeholder.com</h2>
             {/if}
         </section>
-    </div>
+    </aside>
 {/if}
 
 <style lang="scss">

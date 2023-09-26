@@ -3,16 +3,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	server: {
-		proxy: {
-			'https://api.thecodingbum.com': {
-				target: "http://127.0.0.1:3000",
-				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, ''),
-			}
-		}
-	},
-	
 	css: {
 		preprocessorOptions: {
 			scss: {
@@ -20,5 +10,5 @@ export default defineConfig({
 			},
 		},
 	},
-	}
+}
 );

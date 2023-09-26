@@ -65,7 +65,7 @@
                     donate a dollar, a trivial sum for the likes of you, and gain
                     exclusive access to a distinguished catalogue of kindred spirits.
                 </p>
-                    <button on:click={()=> {$showModalStore = true; console.log("test")}}>Donate Now</button>
+                    <button on:click={()=> {$showModalStore = true}}>Donate Now</button>
             </div>
         </div>
 

@@ -11,7 +11,7 @@
     import { getCookie, deleteCookie, setCookie} from "$lib/cookieFuncs"
     import type { Element } from "svelte/types/compiler/interfaces";
 
-    let loggedIn = "";
+    let loggedIn = "nah";
     let headerGhost: HTMLDivElement;
     $:if(!$cssSnapStore) {
             headerGhost?.classList.remove("snap")
@@ -30,18 +30,19 @@
 <Modal/>
 <div bind:this={headerGhost}  id="header-ghost" class="snap">
     <h1>The Coding Bum</h1>
-    {#if loggedIn}
+    {#if loggedIn == "true"}
         <button>Enter</button>
-    {:else}
+    {:else if !loggedIn}
     <button>Join Now</button>
 
     {/if}
 </div>
 
 <header bind:this={$headerStore}>
+    <div class="banner">This website is non-functional. The backend has been taken down to save a few dollars.</div>
     <a href="/"><h1>The Coding Bum</h1></a>
     {#if loggedIn}
-        <button on:click={() => {window.location.href ="/super-cool-kids"}} >Enter</button>
+        <button on:click={() => {window.location.href ="/super-cool-kids"}}> Enter</button>
     {:else}
     <button on:click={showModal}>Join Now</button>
 
@@ -65,6 +66,20 @@
         padding: clamp(0.05rem, 1vw, 2rem) clamp(0.1rem, 4vw, 3rem);
         visibility: hidden;
         margin-bottom: 0.5vh;
+    }
+
+    .banner {
+        position: fixed;
+        top: 1ch;
+        left: 50%;
+        translate: -50%;
+        text-align: center;
+        font-family: var(--inconsolata);
+        grid-area: banner;
+        justify-self: center;
+        width: 35%;
+        background-color: rgba(255, 0, 0, 0.451);
+        border: 1px dashed red;
     }
 
     header {
