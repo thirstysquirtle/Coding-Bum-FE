@@ -9,6 +9,9 @@
 </script>
 
 <footer>
+    <a href="https://github.com/thirstysquirtle">
+    <img src="/github.png" alt="link to my github">
+    </a>
     <a href="/terms-of-service"
         ><button class="small-button italic underline">Terms of Service</button>
     </a>
@@ -26,11 +29,19 @@
 </footer>
 
 <style>
+    a:has(img) {
+        line-height: 0;
+    }
+    img {
+        height: 2rem;
+        aspect-ratio: 1;
+    }
     footer {
         width: 100%;
         align-self: flex-end;
         display: flex;
         gap: 2rem;
+        align-items: center;
         justify-content: center;
         padding: 2ch;
     }
