@@ -215,7 +215,7 @@
 
         .section-content {
             justify-self: center;
-            align-self: flex-start;
+            align-self: center;
             padding-top: 5ch;
             display: grid;
             gap: 1.5ch;
